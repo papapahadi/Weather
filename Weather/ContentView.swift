@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isNight = false
+    @State private var weatherView = WeatherViewModel()
+    
     var body: some View {
         ZStack {
-            BackgroundView(topColor: .blue, midColor: .indigo, bottomColor: .lightBlue)
+            BackgroundView(isNight: isNight)
             VStack {
                 Spacer()
                 
                 CityTextView(cityName: "Haldwani, UK")
+                //Text("time zone: \(weatherView.weatherResponse?.name ?? "Kanpur") ")
                 
-                TodayWeather(temp: 10, image: "cloud.sun.fill")
+                TodayWeather(temp: 10, image: isNight ? "moon.stars.fill" : "cloud.sun.fill")
                 
                 HStack(spacing: 20) {
                     WeekView(day: "Tue", image: "cloud.sun.fill", temp: 8)
@@ -29,9 +33,9 @@ struct ContentView: View {
                 Spacer()
                 
                 Button {
-                    
+                    isNight.toggle()
                 } label: {
-                    WeatherButtonView(title: "Change Day Time", textColor: .white, backgroundColor: .indigo)
+                    WeatherButtonView(title: "Change Day Time", textColor: .blue, backgroundColor: .white)
                 }
                 
                 Spacer()
@@ -69,9 +73,12 @@ struct WeekView: View {
 }
 
 struct BackgroundView: View {
-    var topColor: Color
-    var midColor: Color
-    var bottomColor: Color
+    
+    var isNight : Bool
+    
+    var topColor: Color { isNight ? .black : .blue }
+    var midColor: Color { .indigo }
+    var bottomColor: Color { isNight ? .gray : .lightBlue }
     
     var body: some View {
         LinearGradient(gradient: Gradient(colors: [topColor, midColor, bottomColor]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -96,7 +103,7 @@ struct TodayWeather: View {
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: image)
-                .renderingMode(.original)
+                .symbolRenderingMode(.multicolor)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 180, height: 180)

@@ -14,10 +14,15 @@ struct WeatherButtonView: View {
     
     var body: some View {
         Text(title)
-            .font(.system(size: 20, weight: .bold))
+            .font(.system(size: 25, weight: .bold))
             .frame(width: 280, height: 50)
-            .background(backgroundColor)
+            .background(backgroundColor.gradient)
             .foregroundStyle(textColor)
             .clipShape(.rect(cornerRadius: 10))
     }
+}
+
+
+#Preview {
+    WeatherButtonView(title: "test title", textColor: .white, backgroundColor: .blue)
 }
